@@ -1,0 +1,9 @@
+{
+    "name": "denis909/php-xml-parser",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "denis909\\XmlParser\\": ""
+        }
+    }
+}
