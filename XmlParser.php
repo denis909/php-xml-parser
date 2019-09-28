@@ -10,11 +10,16 @@ abstract class XmlParser
 
     public $count;
 
+    public $debug = false;
+
     protected function parseNode($element, $currentPath, &$node_errors = [])
     {
         if (!strpos($currentPath, '[') && !strpos($currentPath, ']'))
         {
-            $this->debug('path: ' . $currentPath);
+            if ($this->debug)
+            {
+                echo 'path: ' . $currentPath . PHP_EOL;
+            }
         }
 
         if ($element->nodeType == XML_TEXT_NODE) // 3
@@ -33,13 +38,26 @@ abstract class XmlParser
         {
             $child = $childs->item($i);
 
-            if ($child->nodeName != 'item')
+            foreach($this->config as $key => $callback)
             {
-                continue;
-            }
+                $segments = explode(':', $key);
 
-            foreach($this->config as $path => $callback)
-            {
+                if (count($segments) > 1)
+                {
+                    list($path, $nodeName) = $segments;
+
+                    if ($child->nodeName != $nodeName)
+                    {
+                        continue;
+                    } 
+                }
+                else
+                {
+                    list($path) = $segments;
+                }
+
+                $path = '/' . $path;
+
                 if ($path == $currentPath)
                 {
                     if ($child->nodeType != XML_TEXT_NODE) // 3
