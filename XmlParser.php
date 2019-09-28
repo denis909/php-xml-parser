@@ -12,6 +12,10 @@ abstract class XmlParser
 
     public $debug = false;
 
+    public function __construct()
+    {
+    }
+
     protected function parseNode($element, $currentPath, &$node_errors = [])
     {
         if (!strpos($currentPath, '[') && !strpos($currentPath, ']'))
